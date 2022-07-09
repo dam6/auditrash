@@ -1,0 +1,93 @@
+#!/bin/bash
+#Created by github.com/dam6
+
+. /auditrash/scripts/functions
+
+echo "Welcome to auditrash, currently there are $(ls /recyclebin/ | wc -l) files at the /recyclebin ($(du -h /recyclebin/ | awk '{print $1}'))"
+echo "WARNING! auditrash will auto-wipe /recyclebin on 28th every month."
+echo "---------------------------------------------------------------------------"
+
+PS3="Choose an option 1-7: "
+
+select option in "Llist recycled files" "Info about recycled file" "Restore recycled file" "Restore by extension" "Wipe out /recyclebin now" "Check the log files" "Exit auditrash"; do
+
+	case $option in
+	"Llist recycled files")
+		echo
+        	echo "1. Llist files at /recyclebin"
+        	echo "File name <-- Previous location"
+        	echo "-------------------------------"
+		list_recyclebin
+		break
+	;;
+	"Info about recycled file")
+		echo
+        	echo "2. Get info about file at /recyclebin"
+        	echo -n "Write the name of the file currently located at /recylebin: "
+        	read file_name
+        	echo "--------------------------------------------------------------"
+		info $file_name
+		break
+	;;
+	"Restore recycled file")
+		echo
+		echo "3. Restore recycled file from /recyclebin to its previous location"
+        	echo -n "Write the name of the file witch will be restored: "
+        	read file_name
+		echo "------------------------------------------------------------------"
+       		restore_file $file_name
+		break
+	;;
+	"Restore by extension")
+        	echo
+        	echo "4. Restore files from /recyclebin to its previous location by extension"
+        	echo -n "Write the name of the extension files you want to restore: ."
+        	read extension
+        	echo "-----------------------------------------------------------------------"
+        	restore_by_extension $extension
+		break
+        ;;
+	"Wipe out /recyclebin now")
+		echo
+		echo "5. Wipe out /recyclebin now"
+        	echo -n "Are you sure about to completely remove all /recyclebin files? This action can't be undone (y/n): "
+		read -n 1
+		echo
+		echo "----------------------------------------------------------------------------------------------------"
+		if [[ $REPLY == "y" ]]; then
+			wipe_recyclebin
+			echo "/recyclebin have been wiped out"
+			echo
+		elif [[ $REPLY == "n" ]]; then
+			echo
+			echo "Any files have been being removed!"
+			echo
+			exit 3
+		else
+			echo
+			echo "Invalid option. Any files have been being removed!"
+			echo
+			exit 4
+		fi
+		break
+	;;
+	"Check the log files")
+		echo
+		echo "6. Check the log files"
+		echo "-------------------------------"
+		check_log
+		break
+	;;
+	"Exit auditrash")
+		echo
+		echo "7. Exit auditrash"
+		echo "Goodbye!"
+		exit 2
+	;;
+	esac
+
+done
+echo
+source /auditrash/scripts/auditrash
+
+#Created by github.com/dam6

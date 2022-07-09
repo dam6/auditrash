@@ -1,0 +1,24 @@
+#!/bin/bash
+#Created by github.com/dam6
+
+sudo mkdir /recyclebin
+sudo chmod 777 /recyclebin
+
+sudo mkdir -p /auditrash/scripts /auditrash/logs
+sudo touch /auditrash/logs/current.log
+sudo cp scripts/* /auditrash/scripts/.
+
+#sudo chown -R root:root /auditrash
+sudo chmod -R 755 /auditrash/scripts
+sudo chmod 755 /auditrash/logs
+sudo chmod 766 /auditrash/logs/current.log
+
+echo "Adding to all users path..."
+echo "export PATH=\"$PATH:/auditrash/scripts\"" | sudo tee -a /home/*/.bashrc > /dev/null
+echo "Adding to /etc/crontab..."
+echo "0 0  28 * *  root    /auditrash/scripts/wipebin" | sudo tee -a /etc/crontab > /dev/null
+
+echo
+echo "Install completed! Try 'del --help' and 'auditrash'"
+
+#Created by github.com/dam6

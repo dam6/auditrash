@@ -1,0 +1,38 @@
+#!/bin/bash
+#Created by github.com/dam6
+
+. /auditrash/scripts/functions
+
+no_param $@
+if [[ $? != 69 ]]; then exit 1; fi
+
+if [[ $1 == "--help" ]]; then
+	view_help
+
+#force remove option
+elif [[ $1 == "-f" ]]; then
+	shift 1
+	echo -n "Are you sure about removing completely the selected files? This action can't be undone (y/n): "
+        read -n 1
+        echo
+	if [[ $REPLY == "y" ]]; then
+		force_remove $@
+
+	elif [[ $REPLY == "n" ]]; then
+                echo "Any files have been being removed"
+		echo
+              	exit 3
+
+        else
+                echo "Invalid option"
+                echo
+		exit 4
+        fi
+
+#recycle option
+elif [[ $1 == "-r" ]]; then
+	shift 1
+    recycle $@
+else
+	recycle $@
+fi

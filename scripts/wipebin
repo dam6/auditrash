@@ -1,0 +1,11 @@
+#!/bin/bash
+#Created by github.com/dam6
+
+. /auditrash/scripts/functions
+
+wipe_recyclebin
+data=$(date +%m-%Y)
+mv /auditrash/logs/current.log /auditrash/logs/$data.old
+touch /auditrash/logs/current.log
+
+#Created by github.com/dam6
